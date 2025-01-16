@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild} from '@angular/core';
 import { StudentService } from '../student.service';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 import { Student } from '../student';
 
 @Component({
@@ -9,7 +11,10 @@ import { Student } from '../student';
 })
 export class StudentListComponent implements OnInit {
   displayedColumns =['id','name','email','course','actions'];
-  students: Student[] = [];
+  //students: Student[] = [];
+  dataSource = new MatTableDataSource<Student>();
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(private studentService: StudentService) { }
 
@@ -17,13 +22,30 @@ export class StudentListComponent implements OnInit {
     this.getStudents();
   }
 
-  getStudents(): void {
-    this.studentService.getStudents()
-      .subscribe(students => this.students = students);
-  }
+//   getStudents(): void {
+//     this.studentService.getStudents()
+//       .subscribe(this.dataSource.data = students;
+//         this.dataSource.paginator = this.paginator;);
+//
+//   }
 
-  deleteStudent(id: number): void {
-    this.studentService.deleteStudent(id)
-      .subscribe(() => this.students = this.students.filter(student => student.id !== id));
-  }
+    getStudents(): void {
+        this.studentService.getStudents()
+          .subscribe(students => {
+            this.dataSource.data = students;
+            this.dataSource.paginator = this.paginator; // Attach paginator to data source
+          });
+      }
+
+//   deleteStudent(id: number): void {
+//     this.studentService.deleteStudent(id)
+//       .subscribe(() => this.students = this.students.filter(student => student.id !== id));
+//   }
+    deleteStudent(id: number): void {
+        this.studentService.deleteStudent(id)
+          .subscribe(() => {
+            // Remove deleted student from data source
+            this.dataSource.data = this.dataSource.data.filter(student => student.id !== id);
+          });
+      }
 }
