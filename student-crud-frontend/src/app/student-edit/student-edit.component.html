@@ -1,0 +1,20 @@
+<h2>Edit Student</h2>
+<form (ngSubmit)="updateStudent()">
+  <mat-form-field appearance="fill">
+    <mat-label>Name</mat-label>
+    <input matInput [(ngModel)]="student.name" name="name" required>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Email</mat-label>
+    <input matInput [(ngModel)]="student.email" name="email" required>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Course</mat-label>
+    <input matInput [(ngModel)]="student.course" name="course" required>
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" type="submit">Update</button>
+  <button mat-raised-button routerLink="/">Cancel</button>
+</form>
